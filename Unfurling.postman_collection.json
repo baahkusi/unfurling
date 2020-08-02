@@ -1,0 +1,174 @@
+{
+	"info": {
+		"_postman_id": "154b265d-7c9b-4a4f-bc0f-2d2fcaafcc56",
+		"name": "Unfurling",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:3000/login/sbk/sbk",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"login",
+						"sbk",
+						"sbk"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Parse",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTk2MzAzNzIxLCJleHAiOjE1OTYzOTAxMjF9.CqVdgnQ1mG8tZDtzW8TENFkQbpbUkwcT1r6M_CD1WPA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:3000/parse/lambdastories.com",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"parse",
+						"lambdastories.com"
+					]
+				},
+				"description": "This endpoint returns a parsed version of the html content of the url, and returns back in the following format. The idea is to create a response that can then be shown to the user as a card to the user for what the url does. This is also known as site previews / link unfurling.\n\nResponse: { “title”: “”, “favicon”: “”, “large-image”: “”, “snippet”: “” }"
+			},
+			"response": []
+		},
+		{
+			"name": "Translate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTk2MzAzNzIxLCJleHAiOjE1OTYzOTAxMjF9.CqVdgnQ1mG8tZDtzW8TENFkQbpbUkwcT1r6M_CD1WPA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:3000/translate/url",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"translate",
+						"url"
+					]
+				},
+				"description": "This endpoint should use google translate or any other api to translate the contents of the page, and return back html (not json)."
+			},
+			"response": []
+		},
+		{
+			"name": "Upload",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTk2MzAzNzIxLCJleHAiOjE1OTYzOTAxMjF9.CqVdgnQ1mG8tZDtzW8TENFkQbpbUkwcT1r6M_CD1WPA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "item",
+							"type": "file",
+							"src": ""
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/upload",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"upload"
+					]
+				},
+				"description": "Endpoint that takes in a file as a form-data param (I’ll be using postman) and uploads it to storage for access later. Returns an identifier for later retrieval."
+			},
+			"response": []
+		},
+		{
+			"name": "Download",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTk2MzAzNzIxLCJleHAiOjE1OTYzOTAxMjF9.CqVdgnQ1mG8tZDtzW8TENFkQbpbUkwcT1r6M_CD1WPA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:3000/download/007b7d0fe0af0688785194b87dac0141",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"download",
+						"007b7d0fe0af0688785194b87dac0141"
+					]
+				},
+				"description": "Streams the file corresponding to the identifier to the client requesting it."
+			},
+			"response": []
+		}
+	]
+}
