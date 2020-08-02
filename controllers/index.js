@@ -10,8 +10,13 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const axios = require('axios');
 const cheerio = require('cheerio');
-const path = require('path');
+var cloudinary = require('cloudinary').v2;
+var fs = require('fs');
+const DatauriParser = require('datauri/parser');
+const parser = new DatauriParser();
 
+const dotenv = require('dotenv');
+dotenv.config();
 
 const signToken = id => {
   return jwt.sign({
@@ -139,11 +144,6 @@ exports.upload = catchAsync(async (req, res, next) => {
 
   const file = Object.values(req.files)[0];
 
-  let savePath = path.resolve(__dirname, '../uploads/' + file.name);
-
-  console.log(savePath);
-
-
   console.log(file);
 
   const exists = await Upload.findOne( {where: {hash: file.md5 } });
@@ -154,16 +154,17 @@ exports.upload = catchAsync(async (req, res, next) => {
     })
   }
 
-  file.mv(savePath, async function (err) {
-    if (err) {
-      return res.status(500).send(err);
-    }
+  const file_uri = parser.format(file.mimetype, file.data);
 
-    await Upload.create({path: savePath, hash: file.md5});
+  cloudinary.uploader.upload(file_uri.content, async function(error, result) {
+    if (error) {
+      return res.status(500).send(error);
+    }
+    console.log(result)
 
     res.status(200).json({
       msg: "File upload successful",
-      identifier: file.md5
+      identifier: result.public_id
     });
   });
 
@@ -172,13 +173,14 @@ exports.upload = catchAsync(async (req, res, next) => {
 
 exports.download = catchAsync(async (req, res, next) => {
 
-  const file = await Upload.findOne({where: {hash: req.params.identifier}})
+  cloudinary.api.resource(req.params.identifier, async function(error, result){
+    if(error){
+      res.status(400).json({
+        msg: `File with Identifier ${req.params.identifier} does not exist on our servers.`
+      })
+    }
 
-  if(!file){
-    res.status(400).json({
-      msg: `File with Identifier ${req.params.identifier} does not exist on our servers.`
-    })
-  }
-
-  res.download(file.path);
+    res.redirect(result.url);
+  });
+  
 });

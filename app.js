@@ -23,9 +23,7 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
-app.use(fileUpload({
-  createParentPath: true
-}));
+app.use(fileUpload());
 
 // Body parser, reading data from body into req.body
 app.use(express.json());
